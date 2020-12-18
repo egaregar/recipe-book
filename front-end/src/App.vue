@@ -3,11 +3,11 @@
   <div class="header">
     <router-link to="/">
       <div class="logo">
-        <img src="/ordinary.png">
+        <img src="/food_pic.jpg" style="width:50px; padding: 10px 20px;">
       </div>
     </router-link>
     <div class="title">
-      <h1>Museum of Ordinary Objects</h1>
+      <h1>Recipe Master</h1>
     </div>
   </div>
   <div class="content">
@@ -15,8 +15,8 @@
   </div>
   <div class="footer">
     <router-link to="/">Home</router-link> |
-    <router-link to="/admin">Admin</router-link>
-    <p class="name_footer"> Ethan Garlick; <a href="https://github.com/BYU-CS-260-Winter-2020/museum-of-ordinary-objects.git">Git Hub</a> </p>
+    <router-link to="/recipe">Recipe Manager</router-link>
+    <p class="name_footer"> Ethan Garlick; <a href="https://github.com/egaregar/recipe-book.git">Git Hub</a> </p>
   </div>
 </div>
 </template>
@@ -27,19 +27,28 @@ html {
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   background: #fff;
   padding: 0px;
   margin: 0px;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Nunito', sans-serif;
+}
+
 /* Header */
 .header {
   display: flex;
   padding: 10px 100px 0px 100px;
-  background-color: #5BDEFF;
-  color: #1C454F;
+  background-color: #b92d2c;
+  color: #ffe1e1;
 }
 
 .title {
@@ -72,9 +81,15 @@ body {
   text-align: center;
 }
 
+a,
+a:visited {
+  text-decoration: none;
+}
+
 a:hover,
 a:visited:hover {
   text-decoration: none;
+  color: #b92d2c
 }
 
 h1 {

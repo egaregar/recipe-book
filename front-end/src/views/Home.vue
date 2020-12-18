@@ -1,86 +1,138 @@
 <template>
 <div class="home">
-  <section class="image-gallery">
-    <div class="image" v-for="item in items" :key="item.id">
-      <h2>{{item.title}}</h2>
-      <p> <em>{{item.description}}</em></p>
-      <img :src="item.path" />
+  <div class="wrapper">
+    <div class="search">
+      <form class="pure-form">
+        <i class="fas fa-search spaced-icon"></i><input v-model="searchText" placeholder="Search by title, description, or genre" />
+      </form>
+    </div>
+  </div>
+  <section class="recipe-gallery">
+    <div class="recipe" v-for="recipe in recipeList" :key="recipe.id">
+      <h2>{{recipe.title}}</h2>
+      <p> <em>{{recipe.description}}</em></p>
+      <p>Genre: {{recipe.genre}}</p>
+      <img :src="recipe.path" />
+      <h3>Ingredients:</h3>
+      <p>
+        <span style="white-space: pre;"><em>{{recipe.ingredients}}</em></span>
+      </p>
+      <h3>Directions:</h3>
+      <p> <span style="white-space: pre;"> <em>{{recipe.directions}}</em> </span>
+      </p>
     </div>
   </section>
 </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import axios from 'axios';
 export default {
   name: 'Home',
   data() {
     return {
-      items: [],
+      recipes: [],
+      searchText: '',
     }
   },
   created() {
-    this.getItems();
+    this.getRecipes();
   },
   methods: {
-    async getItems() {
+    async getRecipes() {
       try {
-        let response = await axios.get("/api/items");
-        this.items = response.data;
+        let response = await axios.get("/api/recipes");
+        this.recipes = response.data;
         return true;
       } catch (error) {
         console.log(error);
       }
     },
+  },
+  computed: {
+    withLines(description) {
+      var descriptionArray = description.split(/[\r\n]+/);
+      var descriptionLines = new Array();
+      for (var line = 0; line < descriptionArray.length; line++) {
+        descriptionLines.push({
+          Line: descriptionArray[line]
+        });
+      }
+      return descriptionLines;
+    },
+    recipeList() {
+      return this.recipes.filter(recipe => recipe.title.toLowerCase().search(this.searchText.toLowerCase()) >= 0 ||
+        recipe.description.toLowerCase().search(this.searchText.toLowerCase()) >= 0 ||
+        recipe.genre.toLowerCase().search(this.searchText.toLowerCase()) >= 0);
+    }
   }
 }
 </script>
 
 <style scoped>
-.image h2 {
-  font-style: italic;
+body {
+  white-space: pre;
 }
 
-/* Masonry */
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
+.recipe {
+  width: 67%;
+  padding: 20px 0px;
+  margin: 30px 0px;
+  border-top: 2px solid silver;
 }
 
-.image-gallery {
-  column-gap: 1.5em;
+.recipe-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.image {
-  margin: 0 0 1.5em;
-  display: inline-block;
+.recipe h2 {
+  font-style: normal;
+  font-size: 24px;
+}
+
+p {
+  font-style: normal;
+}
+
+img {
+  max-width: 150px;
+}
+
+.spaced-icon {
+  padding: 0px 15px !important;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 50%;
+}
+
+form {
+  display: table;
   width: 100%;
 }
 
-.image img {
+i {
+  display: table-cell;
+  padding-left: 10px;
+  width: 1px;
+}
+
+input {
+  display: table-cell;
+  font-size: 20px;
+  border: none !important;
+  box-shadow: none !important;
   width: 100%;
-}
-
-/* Masonry on large screens */
-@media only screen and (min-width: 1024px) {
-  .image-gallery {
-    column-count: 4;
-  }
-}
-
-/* Masonry on medium-sized screens */
-@media only screen and (max-width: 1023px) and (min-width: 768px) {
-  .image-gallery {
-    column-count: 3;
-  }
-}
-
-/* Masonry on small screens */
-@media only screen and (max-width: 767px) and (min-width: 540px) {
-  .image-gallery {
-    column-count: 2;
-  }
+  height: 40px;
 }
 </style>
